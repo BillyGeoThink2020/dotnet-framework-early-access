@@ -7,6 +7,9 @@
 * Fix handling of InputAttributes and LabelAttributes for ASP.NET CheckBox control. [643614, System.Web.dll, Bug, Build:3646]
 * Fixed a perf issue in HttpApplication instances pool in HttpApplicationFactory class. [639421, system.web.dll, Bug, Build:3673]
 * Fixed NullReferenceException thrown from the page/control with only parameterized constructors with default values when targeting 4.7.2 [635479, System.Web.dll, Bug, Build:3673]
+* Fixed an issue with ValidationContext.MemberName when using custom DataAnnotation.ValidationAttribute. [563497, System.web.dll, Bug, Build:3694]
+* Fixed ArgumentOutOfRangeException in MemoryCache when using change monitors with non-existent files east of GMT. [684136, System.Web.dll, Bug, Build:3694]
+* Fix handling of multi-value HTTP headers that may affect multipart data processing. [684397, System.Web.dll, Bug, Build:3694]
 
 ## BCL
 
@@ -28,6 +31,9 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Fixed GetECDsaPublicKey to work with brainpool curves. [586452, System.Core.dll, Bug, Build:3673]
 * Reduced the number of object finalizations that occur as a result of using X509Certificate2 and related types. [654137, mscorlib.dll, System.dll, System.Security.dll, Bug, Build:3673]
 * Fixed formatting of Japanese date with year 1 (as first year of any era), the date will be formatted using 元 character and not year number “1”.  Example of the new formatted date behavior: 平成元年11月21日compared to old formatted date behavior 平成1年11月21日 [670097, mscorlib.dll, Bug, Build:3673]
+* Fixed default settings used by RsaProtectedConfigurationProvider (use AES instead of 3DES, RSA is now using 2048bit key, OAEP is on by default), fixed encryption with OAEP so that it writes correct metadata. [549418, System.Configuration.dll, Bug, Build:3677]
+* Add API to obtain certificate thumbprints with a caller-specified digest algorithm. [700365, mscorlib.dll, Feature, Build:3677]
+
 
 ## ClickOnce
 
@@ -49,6 +55,12 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * CLR COM no longer returns E_INVALIDARG when marshalling a byref SafeArray from an Event Handler. [239541, WindowsBase.dll, Bug, Build:3673]
 * Fixed a potential hang when a blocking GC is induced in low memory situations [374828, clr.dll, Bug, Build:3673]
 * If you are using Server GC on a Skylake or later machine, you might notice that clr!SVR::t_join::join is taking a lot more CPU cycles. This is because clr!SVR::t_join::join uses the PAUSE instruction which takes a lot longer on Skylake+. This fix scales down the number of times it’s called when running on Skylake+ machine. [683269, clr.dll, Bug, Build:3673]
+* Fixed an issue with the GC where frequent LOH under high memory pressure may result in premature OOM errors. [657730, clr.dll, Bug, Build:3677]
+* Process corrupting exceptions in exception filter (like access violation) now result in aborting the current process. [110375, clr.dll, Bug, Build:3694]
+* .NET now integrates with antimalware providers to scan assemblies loaded from byte arrays. [576558, clr.dll, Feature, Build:3694]
+* Fixed an issue with missing Win32 resources in ReadyToRun images. [624174, crossgen.exe, Bug, Build:3694]
+* Fixed an issue with ngen createpdb where passing in a long output folder could cause a crash. [627712, ngen.exe, Bug, Build:3694]
+* Fixed a crossgen failure when compiling assemblies with no Win32 resources into ReadyToRun images. [722265, coreclr.dll, Bug, Build:3694]
 
 ## Networking
 
@@ -56,6 +68,9 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Fixed HTTP Status line parsing to be more tolerant of missing status description text in HTTP responses. [534936, System.dll, Bug, Build:3621]
 * Fixed a NetworkInformation.NetworkChange deadlock scenario when there is a lock around NetworkChanged listener and user’s callback. [554780, System.Net.NetworkInformation.dll, System.dll, netstandard.dll, Bug, Build:3621]
 * Fixed a deadlock scenario when ServicePoint.ConnectionLimit is updated and requests are sent at the same time. [528650, System.dll, Bug, Build:3673]
+* Fix a race condition that would sometimes cause all of the connections to a server to stop sending HTTP requests. [499777, System.dll, Bug, Build:3694]
+* Added the ability via the config file to specify opt-in performance caching of default credentials for Windows authentication for HTTP and SMTP APIs. [514209, System.dll, Bug, Build:3694]
+* Added retry timer for PAC file discovery after failure. [567511, System.dll, Bug, Build:3694]
 
 ## SQL
 
@@ -63,6 +78,7 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Fixed the issue while using SqlConnection.ConnectionString to set a null or empty connection string, an NRE exception will be thrown by the usage of the API in .Net Framework 4.7.2. [613944, System.Data.dll, Bug, Build:3621]
 * Fixed the following issue relevant to SQL: while connecting to Azure SQL DB using .NET 4.7.2, using MultipleActiveResultSets=true in the connection string with System.Data.SqlClient.SqlConnection, async query operations sometimes lead to a bad TDS protocol request stream to be sent from the client, causing the Async Query APIs to fail connection string. [624283, System.Data.dll, Bug, Build:3632]
 * Fixed a bug where SqlClient login may use an infinite timeout due to truncating a small millisecond timeout to zero when converting to seconds. [647908, System.Data.dll, Bug, Build:3646]
+* This change provides an AppContext switch for making the default value of TransparentNetworkIPResolution false in SqlClient connection strings. [710778, System.Data.dll, Bug, Build:3694]
 
 ## WCF
 
@@ -70,6 +86,12 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Fixed the race-condition that exists in AsyncResult that closes a WaitHandle before Set() is called. When this happens, the process crashes with an ObjectDisposedException. [552736, System.ServiceModel.Internals.dll, Bug, Build:3621]
 * Fixed race-condition when aborting connections which caused ObjectDisposedException to be thrown in CleanupChannelCollections. [586151, mscorlib.dll, Bug, Build:3621]
 * Fixed a high lock contention issue when a large number of threads calling WCF serialization logic [570201, System.Runtime.Serialization.dll, Bug, Build:3646]
+* ServiceHealthBehavior is a new service behavior (IServiceBehavior) for WCF services that exposes a “?health” endpoint.  This new behavior allows one to monitor the internal state of their WCF service and obtain specific HTTP response codes during those times that listeners become faulted, throttle capacities are reached, etc.  One can extend this behavior to further scope the health of their WCF services to match their own custom business rules and needs. [620852, System.Servicemodel.dll, Feature, Build:3694]
+* Fixed a System.AccessViolationException due to accessing disposed X509Certificate2 instance in a rare race condition. The fix is to defer the service certificate cleanup to GC. The impacted scenario is WCF NetTcp bindings using reliable sessions with certificate authentication. Customer can opt-in to the fix by adding the follow AppSetting to the config file. Without this AppSetting set to true, existing services won’t be affected by this code change. :
+  <appSettings>
+    <add key=""wcf:deferSslStreamServerCertificateCleanup"" value=""true""/>
+  </appSettings> [695709, System.Servicemodel.dll, Bug, Build:3694]
+* Fixed a race condition with IIS hosted net.tcp services when the portsharing service is restarted which resulted in the service being unavailable. [695877, System.ServiceModel.WasHosting.dll, Bug, Build:3694]
 
 ## Windows Forms
 
@@ -192,6 +214,35 @@ In order for the application to benefit from these changes, the application shou
 In order for the application to benefit from these changes, the application should be recompiled to target .NET framework 4.8 or the application should explicitly opt-in into all accessibility app context switches in the app.config file. 
 In order for an application that targets 4.8 to opt out from this change, use the following combination of switches:
 <AppContextSwitchOverrides value=""Switch.UseLegacyAccessibilityFeatures=false;Switch.UseLegacyAccessibilityFeatures.2=false;Switch.UseLegacyAccessibilityFeatures.3=true""/> [661319, System.Windows.Forms.Dll, Bug, Build:3673]
+* Fixed ToolStrip and MenuStrip control accessible hierarchy of inner menu/tool items. Enabled support of UI Automation notifications for ToolStrip and MenuStrip controls.[497307, System.Windows.Forms.dll, Bug, Build:3677]
+
+  In order for the application to benefit from these changes, the application should be recompiled to target .NET framework 4.8 or the application should explicitly opt-in into all accessibility app context switches in the app.config file. For example:
+  ```<?xml version=""1.0"" encoding=""utf-8""?>
+  <configuration>
+    <runtime>
+      <!-- AppContextSwitchOverrides values are in the form of 'key1=true|false;key2=true|false  -->
+      <!-- Enabling newer accessibility features (e.g. UseLegacyAccessibilityFeatures.2=false) requires all older accessibility features to be enabled (e.g. UseLegacyAccessibilityFeatures=false) -->
+      <AppContextSwitchOverrides value=""Switch.UseLegacyAccessibilityFeatures=false;Switch.UseLegacyAccessibilityFeatures.2=false;Switch.UseLegacyAccessibilityFeatures.3=false""/>
+    </runtime>
+  </configuration>
+* The keyboard tooltips feature is ""opt-in"" now - it is no longer switched on implicitly when app targets .NET 4.8. ""Switch.UseLegacyAccessibilityFeatures.3=false"", which is a default value for .NET 4.8 apps, is still required by the feature. [686499, System.Windows.Forms.dll, Bug, Build:3694]
+App.config file content example with enabled keyboard tooltips for apps targeting .NET 4.7.2 or older:
+  ```<?xml version=""1.0"" encoding=""utf-8""?>
+  <configuration>
+    ...
+    <runtime>
+      <!-- Enabling newer accessibility features (e.g. UseLegacyAccessibilityFeatures.2=false) requires all older accessibility features to be enabled (e.g. UseLegacyAccessibilityFeatures=false) -->
+      <AppContextSwitchOverrides value=""Switch.UseLegacyAccessibilityFeatures=false;Switch.UseLegacyAccessibilityFeatures.2=false;Switch.UseLegacyAccessibilityFeatures.3=false;Switch.System.Windows.Forms.UseLegacyToolTipDisplay=false""/>
+    </runtime>
+  </configuration>
+  App.config file content example with enabled keyboard tooltips for apps targeting .NET 4.8:
+  <?xml version=""1.0"" encoding=""utf-8""?>
+  <configuration>
+    ...
+    <runtime>
+      <AppContextSwitchOverrides value=""Switch.System.Windows.Forms.UseLegacyToolTipDisplay=false""/>
+    </runtime>
+  </configuration>
 
 ## WPF
 
@@ -244,6 +295,13 @@ On .NET Framework Versions 4.7.2 and older, applications must opt in to enable t
 ""Switch.System.Windows.DoNotUsePresentationDpiCapabilityTier2OrGreater"" to ""false"". This switch can be set either in the registry or in the application - see the documentation for AppContext (https://msdn.microsoft.com/en-us/library/system.appcontext(v=vs.110).aspx). [646805,  PresentationFramework.dll;PresentationCore.dll;WindowsBase.dll, Bug, Build:3673]
 * Fixed an issue arising when refreshing a grouped collection view. While the groups are being rebuilt, they pass through a transient state where the subgroups are empty but the cached value for count still reports non-empty. A re-entrant call to get an item at a given index during this time will get ArgumentOutOfRangeException, even though index < count. [656948, PresentationFramework.dll, Bug, Build:3673]
 * Fixed a crash due to TaskCanceledException that can occur during shutdown of some WPF apps.   Apps that continue to do work involving weak events or data binding after Application.Run() returns are known to be vulnerable to this crash. [668328,WindowsBase.dll, Bug, Build:3673]
+* Added support for ControllerFor UIAutomation property [503411, PresentationCore.dll, UIAutomationTypes.dll, Feature, Build:3677]
+* Fixed an issue where focus loops inside a WPF UserControl instead of breaking out of it under some hosting scenarios. [542626, PresentationCore.dll, PresentationFramework.dll, WindowFormsIntegration.dll, Bug, Build:3677]
+* Fixed an issue where dragging from a WPF application and dropping into an application that fails causes a crash in WPF. [685894, PresentationFramework.dll, Bug, Build:3677]
+* Fixed a crash when using "live sorting" and NewItemPlaceholderPosition.AtBeginning at the same time. [387603, PresentationFramework.dll, Bug, Build:3694]
+* Added support for SizeOfSet and PositionInSet UIAutomation properties, this change also provides defaults for some controls. [488213, PresentationCore.dll, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, UIAutomationClient.dll, UIAutomationTypes.dll, Feature, Build:3694]
+* Scrolling panels now honor the system setting for mouse wheel to "scroll by screen". [586801, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, Bug, Build:3694]
+* Tooltips now show underneath controls when keyboard focused, Ctrl+Shift+F10 dismisses/reshows tooltips. [614397, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, Feature, Build:3694]
 
 ## WorkFlow
 
@@ -267,3 +325,4 @@ For the former case (lease lifetime expires), a new AppSetting for the configura
 The AppSetting looks like this:
 <add key=""Transactions:ContextKeyRemotingLeaseLifetimeInMinutes"" value=""5""/>The value specifies the lease lifetime for the object, in minutes.`` [672774, System.Transactions.dll, Bug, Build:3673]
 * Fixed an accessibility problem to have navigation information for ExpandAll/CollapseAll ToggleButtons on workflow designer. [682170, System.Activities.Presentation.dll, Bug, Build:3673]
+* Previously Visual Studio builds of C# projects would create 3 temporary files and not clean them. With this change, the files are only created for C# projects that contain XAML files and utilize the XamlAppDef build action and those files are deleted with the Clean task. [392996, System.Workflow.Runtime.dll, Bug, Build:3694]
