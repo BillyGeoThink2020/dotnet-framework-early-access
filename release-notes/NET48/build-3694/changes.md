@@ -42,7 +42,6 @@ Following changes are included in .NET Framework 4.8 build 3694. You can view th
 * Fixed a race condition with IIS hosted net.tcp services when the portsharing service is restarted which resulted in the service being unavailable. [695877, System.ServiceModel.WasHosting.dll, Bug, Build:3694]
 
 
-
 ## Windows Forms
 * Fixed ToolStrip and MenuStrip control accessible hierarchy of inner menu/tool items. Enabled support of UI Automation notifications for ToolStrip and MenuStrip controls.[497307, System.Windows.Forms.dll, Bug, Build:3677]
 
@@ -55,7 +54,7 @@ Following changes are included in .NET Framework 4.8 build 3694. You can view th
       <AppContextSwitchOverrides value=""Switch.UseLegacyAccessibilityFeatures=false;Switch.UseLegacyAccessibilityFeatures.2=false;Switch.UseLegacyAccessibilityFeatures.3=false""/>
     </runtime>
   </configuration>
-* The keyboard tooltips feature is ""opt-in"" now - it is no longer switched on implicitly when app targets .NET 4.8. ""Switch.UseLegacyAccessibilityFeatures.3=false"", which is a default value for .NET 4.8 apps, is still required by the feature. [686499, System.Windows.Forms.dll, Bug, Build:3694]
+* The keyboard tooltips feature is "opt-in" now - it is no longer switched on implicitly when app targets .NET 4.8. "Switch.UseLegacyAccessibilityFeatures.3=false", which is a default value for .NET 4.8 apps, is still required by the feature. [686499, System.Windows.Forms.dll, Bug, Build:3694]
 App.config file content example with enabled keyboard tooltips for apps targeting .NET 4.7.2 or older:
   ```<?xml version=""1.0"" encoding=""utf-8""?>
   <configuration>
@@ -77,6 +76,7 @@ App.config file content example with enabled keyboard tooltips for apps targetin
 
 ## WorkFlow
 * Previously Visual Studio builds of C# projects would create 3 temporary files and not clean them. With this change, the files are only created for C# projects that contain XAML files and utilize the XamlAppDef build action and those files are deleted with the Clean task. [392996, System.Workflow.Runtime.dll, Bug, Build:3694]
+
 
 ## WPF
 * Added support for ControllerFor UIAutomation property [503411, PresentationCore.dll, UIAutomationTypes.dll, Feature, Build:3677]
