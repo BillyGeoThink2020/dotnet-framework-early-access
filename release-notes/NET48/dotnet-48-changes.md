@@ -225,7 +225,7 @@ In order for an application that targets 4.8 to opt out from this change, use th
       <AppContextSwitchOverrides value=""Switch.UseLegacyAccessibilityFeatures=false;Switch.UseLegacyAccessibilityFeatures.2=false;Switch.UseLegacyAccessibilityFeatures.3=false""/>
     </runtime>
   </configuration>
-* The keyboard tooltips feature is ""opt-in"" now - it is no longer switched on implicitly when app targets .NET 4.8. ""Switch.UseLegacyAccessibilityFeatures.3=false"", which is a default value for .NET 4.8 apps, is still required by the feature. [686499, System.Windows.Forms.dll, Bug, Build:3694]
+* The keyboard tooltips feature is "opt-in" now - it is no longer switched on implicitly when app targets .NET 4.8. "Switch.UseLegacyAccessibilityFeatures.3=false", which is a default value for .NET 4.8 apps, is still required by the feature. [686499, System.Windows.Forms.dll, Bug, Build:3694]
 App.config file content example with enabled keyboard tooltips for apps targeting .NET 4.7.2 or older:
   ```<?xml version=""1.0"" encoding=""utf-8""?>
   <configuration>
