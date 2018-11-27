@@ -31,8 +31,8 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Fixed GetECDsaPublicKey to work with brainpool curves. [586452, System.Core.dll, Bug, Build:3673]
 * Reduced the number of object finalizations that occur as a result of using X509Certificate2 and related types. [654137, mscorlib.dll, System.dll, System.Security.dll, Bug, Build:3673]
 * Fixed formatting of Japanese date with year 1 (as first year of any era), the date will be formatted using 元 character and not year number “1”.  Example of the new formatted date behavior: 平成元年11月21日compared to old formatted date behavior 平成1年11月21日 [670097, mscorlib.dll, Bug, Build:3673]
-* Fixed default settings used by RsaProtectedConfigurationProvider (use AES instead of 3DES, RSA is now using 2048bit key, OAEP is on by default), fixed encryption with OAEP so that it writes correct metadata. [549418, System.Configuration.dll, Bug, Build:3677]
-* Add API to obtain certificate thumbprints with a caller-specified digest algorithm. [700365, mscorlib.dll, Feature, Build:3677]
+* Fixed default settings used by RsaProtectedConfigurationProvider (use AES instead of 3DES, RSA is now using 2048bit key, OAEP is on by default), fixed encryption with OAEP so that it writes correct metadata. [549418, System.Configuration.dll, Bug, Build:3694]
+* Add API to obtain certificate thumbprints with a caller-specified digest algorithm. [700365, mscorlib.dll, Feature, Build:3694]
 
 
 ## ClickOnce
@@ -41,6 +41,7 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Fixed Mage so it can properly update the identity of dependent assemblies in ClickOnce application manifests. [534286, Microsoft.Build.Tasks.v4.0.dll, Bug, Build:3621]
 * Fixed ClickOnce dialogs (Splash screen, Install progress dialog, Maintenance dialog and Update dialog) have accessibility issues as mentioned in this bug. Fix is for realigning control indices and setting accessible names where it was missing. [541886, Microsoft.Build.Tasks.v4.0.dll, Bug, Build:3621]
 * Fixed progress bar alignment from Right to Left in Splash Screen and Download progress dialog for ARA & HEB languages for ClickOnce UI. Fixed RTL layout in the ClickOnce dialogs. Individual controls are to be set in RTL layout as this property is not propagated. Set this property explicitly on progress bar control. [552893, Microsoft.Build.Tasks.v4.0.dll, Bug, Build:3621]
+
 
 ## CLR
 
@@ -55,12 +56,13 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * CLR COM no longer returns E_INVALIDARG when marshalling a byref SafeArray from an Event Handler. [239541, WindowsBase.dll, Bug, Build:3673]
 * Fixed a potential hang when a blocking GC is induced in low memory situations [374828, clr.dll, Bug, Build:3673]
 * If you are using Server GC on a Skylake or later machine, you might notice that clr!SVR::t_join::join is taking a lot more CPU cycles. This is because clr!SVR::t_join::join uses the PAUSE instruction which takes a lot longer on Skylake+. This fix scales down the number of times it’s called when running on Skylake+ machine. [683269, clr.dll, Bug, Build:3673]
-* Fixed an issue with the GC where frequent LOH under high memory pressure may result in premature OOM errors. [657730, clr.dll, Bug, Build:3677]
+* Fixed an issue with the GC where frequent LOH under high memory pressure may result in premature OOM errors. [657730, clr.dll, Bug, Build:3694]
 * Process corrupting exceptions in exception filter (like access violation) now result in aborting the current process. [110375, clr.dll, Bug, Build:3694]
 * .NET now integrates with antimalware providers to scan assemblies loaded from byte arrays. [576558, clr.dll, Feature, Build:3694]
 * Fixed an issue with missing Win32 resources in ReadyToRun images. [624174, crossgen.exe, Bug, Build:3694]
 * Fixed an issue with ngen createpdb where passing in a long output folder could cause a crash. [627712, ngen.exe, Bug, Build:3694]
 * Fixed a crossgen failure when compiling assemblies with no Win32 resources into ReadyToRun images. [722265, coreclr.dll, Bug, Build:3694]
+
 
 ## Networking
 
@@ -72,6 +74,7 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Added the ability via the config file to specify opt-in performance caching of default credentials for Windows authentication for HTTP and SMTP APIs. [514209, System.dll, Bug, Build:3694]
 * Added retry timer for PAC file discovery after failure. [567511, System.dll, Bug, Build:3694]
 
+
 ## SQL
 
 * Fixed the issue that SqlDataReader.ReadAsync() runs synchronously. Now the method runs asynchronously as expected. [594433, System.Data.dll, Bug, Build:3621]
@@ -79,6 +82,7 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Fixed the following issue relevant to SQL: while connecting to Azure SQL DB using .NET 4.7.2, using MultipleActiveResultSets=true in the connection string with System.Data.SqlClient.SqlConnection, async query operations sometimes lead to a bad TDS protocol request stream to be sent from the client, causing the Async Query APIs to fail connection string. [624283, System.Data.dll, Bug, Build:3632]
 * Fixed a bug where SqlClient login may use an infinite timeout due to truncating a small millisecond timeout to zero when converting to seconds. [647908, System.Data.dll, Bug, Build:3646]
 * This change provides an AppContext switch for making the default value of TransparentNetworkIPResolution false in SqlClient connection strings. [710778, System.Data.dll, Bug, Build:3694]
+
 
 ## WCF
 
@@ -92,6 +96,7 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
     <add key=""wcf:deferSslStreamServerCertificateCleanup"" value=""true""/>
   </appSettings> [695709, System.Servicemodel.dll, Bug, Build:3694]
 * Fixed a race condition with IIS hosted net.tcp services when the portsharing service is restarted which resulted in the service being unavailable. [695877, System.ServiceModel.WasHosting.dll, Bug, Build:3694]
+
 
 ## Windows Forms
 
@@ -214,7 +219,7 @@ In order for the application to benefit from these changes, the application shou
 In order for the application to benefit from these changes, the application should be recompiled to target .NET framework 4.8 or the application should explicitly opt-in into all accessibility app context switches in the app.config file. 
 In order for an application that targets 4.8 to opt out from this change, use the following combination of switches:
 <AppContextSwitchOverrides value=""Switch.UseLegacyAccessibilityFeatures=false;Switch.UseLegacyAccessibilityFeatures.2=false;Switch.UseLegacyAccessibilityFeatures.3=true""/> [661319, System.Windows.Forms.Dll, Bug, Build:3673]
-* Fixed ToolStrip and MenuStrip control accessible hierarchy of inner menu/tool items. Enabled support of UI Automation notifications for ToolStrip and MenuStrip controls.[497307, System.Windows.Forms.dll, Bug, Build:3677]
+* Fixed ToolStrip and MenuStrip control accessible hierarchy of inner menu/tool items. Enabled support of UI Automation notifications for ToolStrip and MenuStrip controls.[497307, System.Windows.Forms.dll, Bug, Build:3694]
 
   In order for the application to benefit from these changes, the application should be recompiled to target .NET framework 4.8 or the application should explicitly opt-in into all accessibility app context switches in the app.config file. For example:
   ```<?xml version=""1.0"" encoding=""utf-8""?>
@@ -243,6 +248,7 @@ App.config file content example with enabled keyboard tooltips for apps targetin
       <AppContextSwitchOverrides value=""Switch.System.Windows.Forms.UseLegacyToolTipDisplay=false""/>
     </runtime>
   </configuration>
+
 
 ## WPF
 
@@ -283,7 +289,7 @@ App.config file content example with enabled keyboard tooltips for apps targetin
 * Fixed the DeadLock issue faced during creation of Spellchecker while Finalizer is ending another Instance. Under certain circumstances, WPF applications using the spell-checker that use custom dictionaries could throw unexpected excpetions and crash [646599, PresentationFramework.dll, Bug, Build:3646]
 * Addressed the issue where GroupItem headers containing an Expander were not announced correctly by screen readers [646633, PresentationFramework.dll, Bug, Build:3646]
 * Fixed WPF issue of not creating correctly-size rendertarget for mixed-mode child windows. Under certain circumstances, per-monitor DPI aware applications that host WPF based controls or plugins were not rendering the WPF window fully [646801, wpfgfx_v0400.dll, Bug, Build:3646]
-* Addressed the restore issue of Window.Left & Window.Top. When WPF applications are running in per-monitor aware mode, saving the value of Window.Left and Window.Top at application end, and restoring the values to a Window prior to creation upon the next application launch, was not restoring the application to the same screen position where it was at the time the application was closed. [646803, PresentationFramework.dll;PresentationCore.dll;WindowsBase.dll, Bug, Build:3646]
+* Addressed the restore issue of Window.Left & Window.Top. When WPF applications are running in per-monitor aware mode, saving the value of Window.Left and Window.Top at application end, and restoring the values to a Window prior to creation upon the next application launch, was not restoring the application to the same screen position where it was at the time the application was closed. [646803, PresentationFramework.dll; PresentationCore.dll;WindowsBase.dll, Bug, Build:3646]
 * Fixed the issue where HwndHost does not adapt child-HWND sizing correctly during DPI changes. When WPF is run in Per-Monitor Aware mode, controls hosted within HwndHost were not sized correctly after DPI changes (for e.g., when moving applications from one monitor to another). This fix ensures that controls hosted so are sized appropriately [646805, PresentationFramework.dll;PresentationCore.dll;WindowsBase.dll, Bug, Build:3646]
 * Fixed the issue of WPF Windows not scaling correctly. WPF windows that are parented under native HWND’s, including Windows Forms (using ElementHost), will correctly react to DPI changes and scale themselves appropriately when the dpiAwareness element in the application manifest is updated to “PerMonitorV2” value. [478267, PresentationCore.dll,wpfgfx_v0400.dll, Feature, Build:3673]
 * Fixed a race condition where an external process (e.g. anti-virus scanner or search indexer) could block access to temporary files. [519951, PresentationCore.dll, PresentationFramework.dll, System.Speech.dll, Bug, Build:3673]
@@ -294,19 +300,20 @@ App.config file content example with enabled keyboard tooltips for apps targetin
 On .NET Framework Versions 4.7.2 and older, applications must opt in to enable the fix by setting the AppContext switch 
 ""Switch.System.Windows.DoNotUsePresentationDpiCapabilityTier2OrGreater"" to ""false"". This switch can be set either in the registry or in the application - see the documentation for AppContext (https://msdn.microsoft.com/en-us/library/system.appcontext(v=vs.110).aspx). [646805,  PresentationFramework.dll;PresentationCore.dll;WindowsBase.dll, Bug, Build:3673]
 * Fixed an issue arising when refreshing a grouped collection view. While the groups are being rebuilt, they pass through a transient state where the subgroups are empty but the cached value for count still reports non-empty. A re-entrant call to get an item at a given index during this time will get ArgumentOutOfRangeException, even though index < count. [656948, PresentationFramework.dll, Bug, Build:3673]
-* Fixed a crash due to TaskCanceledException that can occur during shutdown of some WPF apps.   Apps that continue to do work involving weak events or data binding after Application.Run() returns are known to be vulnerable to this crash. [668328,WindowsBase.dll, Bug, Build:3673]
-* Added support for ControllerFor UIAutomation property [503411, PresentationCore.dll, UIAutomationTypes.dll, Feature, Build:3677]
-* Fixed an issue where focus loops inside a WPF UserControl instead of breaking out of it under some hosting scenarios. [542626, PresentationCore.dll, PresentationFramework.dll, WindowFormsIntegration.dll, Bug, Build:3677]
-* Fixed an issue where dragging from a WPF application and dropping into an application that fails causes a crash in WPF. [685894, PresentationFramework.dll, Bug, Build:3677]
+* Fixed a crash due to TaskCanceledException that can occur during shutdown of some WPF apps. Apps that continue to do work involving weak events or data binding after Application.Run() returns are known to be vulnerable to this crash. [668328,WindowsBase.dll, Bug, Build:3673]
+* Added support for ControllerFor UIAutomation property [503411, PresentationCore.dll, UIAutomationTypes.dll, Feature, Build:3694]
+* Fixed an issue where focus loops inside a WPF UserControl instead of breaking out of it under some hosting scenarios. [542626, PresentationCore.dll, PresentationFramework.dll, WindowFormsIntegration.dll, Bug, Build:3694]
+* Fixed an issue where dragging from a WPF application and dropping into an application that fails causes a crash in WPF. [685894, PresentationFramework.dll, Bug, Build:3694]
 * Fixed a crash when using "live sorting" and NewItemPlaceholderPosition.AtBeginning at the same time. [387603, PresentationFramework.dll, Bug, Build:3694]
 * Added support for SizeOfSet and PositionInSet UIAutomation properties, this change also provides defaults for some controls. [488213, PresentationCore.dll, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, UIAutomationClient.dll, UIAutomationTypes.dll, Feature, Build:3694]
 * Scrolling panels now honor the system setting for mouse wheel to "scroll by screen". [586801, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, Bug, Build:3694]
 * Tooltips now show underneath controls when keyboard focused, Ctrl+Shift+F10 dismisses/reshows tooltips. [614397, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, Feature, Build:3694]
 
+
 ## WorkFlow
 
 * We have modified the hashing algorithm used to generate XOML file checksums when building projects with XOML files. If this causes problems, the previous hashing algorithm can be used by specifying ""true"" for the following AppContext switch: Switch.System.Workflow.ComponentModel.UseLegacyHashForXomlFileChecksum. Note that this AppContext switch applies to the MSBuild process, so must be specified in the ""config path"" of the MSBuild.Exe that is used to perform the builds. [531054, System.Workflow.Runtime.dll, Bug, Build:3621]
-* We have modified the hashing algorithm used to calculate keys to internal in-memory caches. If this causes problems, the previous hashing algorithm can be used by specifying ""true"" for the following AppContext switches: Switch.System.Workflow.Runtime.UseLegacyHashForWorkflowDefinitionDispenserCacheKey Switch.System.Workflow.Runtime.UseLegacyHashForSqlTrackingCacheKey. [532505, System.Workflow.Runtime.dll, Bug, Build:3621]"
+* We have modified the hashing algorithm used to calculate keys to internal in-memory caches. If this causes problems, the previous hashing algorithm can be used by specifying ""true"" for the following AppContext switches: Switch.System.Workflow.Runtime.UseLegacyHashForWorkflowDefinitionDispenserCacheKey Switch.System.Workflow.Runtime.UseLegacyHashForSqlTrackingCacheKey. [532505, System.Workflow.Runtime.dll, Bug, Build:3621]
 * Fixed default hashing algorithm that help debugging symbols has changed. If you encounter problems with breakpoints in the workflow designer not being hit when expected, you may have a mismatch of hashing algorithms between MSBuild and the project being debugged. The following AppContext switch can be specified for MSBuild.exe and the project being debugged to help alleviate the problem. Switch.System.Activities.UseLegacyHashForDebuggerSymbols If this switch has a value of ""true"", then the default hashing algorithm for pre-4.7.2 versions of .NET are used. If the value of the switch is ""false"", the newer default hashing algorithm is used. [537692, System.Workflow.Runtime.dll, Bug, Build:3621]
 * Previously, under extreme usage conditions (high volume of connections to MSDTC), it was possible for a CriticalSection to be held by a single thread indefinitely, resulting in the need to restart the process. This problem has been resolved. In addition, some object caches that would help performance in multi-threaded scenarios were not taken advantage of correctly. This has been resolved. [540812, System.Workflow.Runtime.dll, Bug, Build:3621]
 * Fixed an accessibility problem to enable connector label reading on workflow designer [604810, System.Activities.Presentation.dll, Bug, Build:3646]

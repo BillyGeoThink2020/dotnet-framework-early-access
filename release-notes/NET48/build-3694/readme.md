@@ -1,6 +1,6 @@
-# .NET Framework Early Access Build 3694 Release Notes
+# .NET Framework Early Access Build 3694
 
-You can learn about the changes made in this build of the .NET Framework.
+Learn more about the changes made in this .NET Framework build:
 
 - [Download](https://go.microsoft.com/fwlink/?LinkId=2033281)
 - [Announcement blog post](https://go.microsoft.com/fwlink/?linkid=2034680)
