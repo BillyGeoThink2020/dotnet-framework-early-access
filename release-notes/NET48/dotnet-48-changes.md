@@ -62,6 +62,14 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
 * Fixed an issue with missing Win32 resources in ReadyToRun images. [624174, crossgen.exe, Bug, Build:3694]
 * Fixed an issue with ngen createpdb where passing in a long output folder could cause a crash. [627712, ngen.exe, Bug, Build:3694]
 * Fixed a crossgen failure when compiling assemblies with no Win32 resources into ReadyToRun images. [722265, coreclr.dll, Bug, Build:3694]
+* Fixed ability to handle process corrupted state exceptions stemming from Marshal.PtrToStructure on x86. [381677, clr.dll, Bug, Build:3707]
+* Fixed intermittent access violation errors when Server GC interacts with type-forwarded value types implemented in mscorlib or other domain-neutral assemblies during garbage collection. [425626, clr.dll, Bug, Build:3707]
+* Enabled a very obscure and uncommon usage pattern where FX Closure Walks are too expensive in the default domain. Introduced DeferFxClosureWalk (opt-in) switch that when set does the following things: 1) Disable DisableFxClosureWalk switch 2) When in LoaderOptimization.MultiHost, all assemblies are assumed sharable in the default domain and the closure walk is deferred as long as possible. This solution will provide good default domain performance and correctness. [485894, clr.dll, Bug, Build:3707]
+* Fixed crashes that can occur when NGen'ed facade assemblies are loaded as multidomain-sharable.  [602785, clr.dll, Bug, Build:3707]
+* Improved Monitor’s lock acquisition performance and scalability under a perpetual lock convoy. [602844, clr.dll, Bug, Build:3707]
+* Fixed an issue that previously caused Ngen to run out of memory every time it executed due to registry corruption. [702519, mscorsvc.dll / mscorsvw.exe, Bug, Build:3707]
+* Triggering a System.Threading.ThreadAbortException when System.Diagnostics.Debugger.s_triggerThreadAbortExceptionForDebugger is set to true. [732816, mscorlib.dll, Bug, Build:3707]
+* Fix a crash on COM interop and properly return the hresult for the OOM. [733492, clr.dll, Bug, Build:3707]
 
 
 ## Networking
@@ -96,6 +104,7 @@ DateTime and DateTimeOffset operations will continue to work as it used to work,
     <add key=""wcf:deferSslStreamServerCertificateCleanup"" value=""true""/>
   </appSettings> [695709, System.Servicemodel.dll, Bug, Build:3694]
 * Fixed a race condition with IIS hosted net.tcp services when the portsharing service is restarted which resulted in the service being unavailable. [695877, System.ServiceModel.WasHosting.dll, Bug, Build:3694]
+* Fixed broken WCF document links in the tracing log that were broken due to MSDN doc location change. [712450, System.ServiceModel.dll, Bug, Build:3707]
 
 
 ## Windows Forms
@@ -248,6 +257,18 @@ App.config file content example with enabled keyboard tooltips for apps targetin
       <AppContextSwitchOverrides value=""Switch.System.Windows.Forms.UseLegacyToolTipDisplay=false""/>
     </runtime>
   </configuration>
+* Added per monitor DPI awareness support to ToolStrip and ToolStrip Items. [378542, System.Windows.Forms.dll, Bug, Build:3707]
+* Fixed accessibility information about ComboBox DataGridView cell, including expanded/collapsed state of this cell. [657355, System.Windows.Forms.dll, Bug, Build:3707]
+* Fixed providing accessibility information about ComboBox selected item: item selection is announced and accessible info is presented even the DropDownList is not opened and user selects the items using arrow keys. In ordr=er for the application to benefit from these changes, the application should explicitly opt-in into all accessibility app context switches in the app.config file. [703373, System.Windows.Forms.dll, Bug, Build:3707] For example:
+  ```<?xml version=""1.0"" encoding=""utf-8""?>
+  <configuration>
+    <runtime>
+      <!-- AppContextSwitchOverrides values are in the form of 'key1=true|false;key2=true|false  -->
+      <!-- Enabling newer accessibility features (e.g. UseLegacyAccessibilityFeatures.2=false) requires all older accessibility features to be enabled (e.g. UseLegacyAccessibilityFeatures=false) -->
+      <AppContextSwitchOverrides value=""Switch.UseLegacyAccessibilityFeatures=false;Switch.UseLegacyAccessibilityFeatures.2=false;Switch.UseLegacyAccessibilityFeatures.3=false""/>
+    </runtime>
+  </configuration>
+* Added per monitor DPI awareness support to the PropertyGrid. [719232, System.Windows.Forms.dll, Bug, Build:3707]
 
 
 ## WPF
@@ -308,6 +329,12 @@ On .NET Framework Versions 4.7.2 and older, applications must opt in to enable t
 * Added support for SizeOfSet and PositionInSet UIAutomation properties, this change also provides defaults for some controls. [488213, PresentationCore.dll, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, UIAutomationClient.dll, UIAutomationTypes.dll, Feature, Build:3694]
 * Scrolling panels now honor the system setting for mouse wheel to "scroll by screen". [586801, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, Bug, Build:3694]
 * Tooltips now show underneath controls when keyboard focused, Ctrl+Shift+F10 dismisses/reshows tooltips. [614397, PresentationFramework.dll, System.Windows.Controls.Ribbon.dll, Feature, Build:3694]
+* Improved the performance of rebuilding the automation tree of an items control (ListBox, DataGrid, etc.) in which grouping is enabled. [104559, PresentationCore.dll, PresentationFramework.dll, Bug, Build:3707]
+* Fixed the behavior of automation Grid pattern in a ListView. [401080, PresentationFramework.dll, Bug, Build:3707]
+* Fixed the automation tree exposed for a plain ItemsControl (as opposed to a derived class like ListBox, DataGrid, etc.). [410007, PresentationCore.dll, PresentationFramework.dll, Bug, Build:3707]
+* Fixed an infinite loop that can arise when setting the height of ListBox (or other ItemsControl) to zero. [448747, PresentationFramework.dll, Bug, Build:3707]
+* Fixed a reliability problem to reduce crashes with rapid window size changes when running in Software Rendering mode. [691364, wpfgfx_v0400.dll, Bug, Build:3707]
+* Fixed a crash arising when Visual Studio's diagnostic tools are enabled to debug an app that has a ResourceDictionary whose Source points to invalid XAML. [727642, PresentationFramework.dll, Bug, Build:3707]
 
 
 ## WorkFlow
@@ -333,3 +360,4 @@ The AppSetting looks like this:
 <add key=""Transactions:ContextKeyRemotingLeaseLifetimeInMinutes"" value=""5""/>The value specifies the lease lifetime for the object, in minutes.`` [672774, System.Transactions.dll, Bug, Build:3673]
 * Fixed an accessibility problem to have navigation information for ExpandAll/CollapseAll ToggleButtons on workflow designer. [682170, System.Activities.Presentation.dll, Bug, Build:3673]
 * Previously Visual Studio builds of C# projects would create 3 temporary files and not clean them. With this change, the files are only created for C# projects that contain XAML files and utilize the XamlAppDef build action and those files are deleted with the Clean task. [392996, System.Workflow.Runtime.dll, Bug, Build:3694]
+* Prevented vulnerabilities based on misuse of serialized ActivitySurrogateSelector.ObjectSurrogates. [726199, System.Workflow.ComponentModel.dll, Bug, Build:3707]

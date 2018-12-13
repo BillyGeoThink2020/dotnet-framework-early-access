@@ -3,14 +3,14 @@
 This repository is the home for .NET Framework Early Access Program. It provides you with all the information you need to participate in .NET Framework Early Access Program. In this program we will share early builds of the next release of the .NET Framework on a regular basis for your feedback. The builds shared via this program are not ready for production and are not supported. 
 
 * [.NET Framework Early Access License](microsoft-dotnet-framework-pre-release-license.txt)
-* [Download .NET Framework Early Access build 3694](https://go.microsoft.com/fwlink/?linkid=2033281) 
+* [Download .NET Framework Early Access build 3707](https://go.microsoft.com/fwlink/?linkid=2033281) 
 
 
 **Participation Information**
 
 * [Install Instructions](instructions.md)
-* [Release Notes](release-notes/NET48/build-3694/readme.md)
-* [Build 3694 - Blog post](https://go.microsoft.com/fwlink/?linkid=2034680)
+* [Release Notes](release-notes/NET48/build-3707/readme.md)
+* [Build 3707 - Blog post](https://go.microsoft.com/fwlink/?linkid=2034680)
 
 **Reporting Issues**
 
@@ -19,7 +19,7 @@ This repository is the home for .NET Framework Early Access Program. It provides
 
 ### Windows Versions
 
-The .NET Framework Build 3694 can be installed on the following Windows versions.
+The .NET Framework Build 3707 can be installed on the following Windows versions.
 
 **Client**
 
@@ -27,12 +27,17 @@ The .NET Framework Build 3694 can be installed on the following Windows versions
 * Windows 10 April 2018 Update
 * Windows 10 Fall Creators Update
 * Windows 10 Creators Update
-* Windows 10 Anniversary Update 
+* Windows 10 Anniversary Update
+* Windows 8.1
+* Windows 7 SP1
 
 **Server**
 
 * Windows Server, version 1709
 * Windows Server 2016
+* Windows Server 2012
+* Windows Server 2012 R2
+* Windows Server 2008 R2 SP1
 
 
 ## More Information on the Program
