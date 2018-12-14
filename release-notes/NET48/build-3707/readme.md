@@ -1,4 +1,4 @@
-# .NET Framework Early Access Build 3694
+# .NET Framework Early Access Build 3707
 
 Learn more about the changes made in this .NET Framework build:
 
@@ -8,11 +8,7 @@ Learn more about the changes made in this .NET Framework build:
 
 ## Release Notes by Product Area
 
-- [ASP.NET](changes.md#asp.net)
-- [BCL](changes.md#bcl)
 - [CLR](changes.md#clr)
-- [Networking](changes.md#networking)
-- [SQL](changes.md#SQL)
 - [WCF](changes.md#WCF)
 - [Windows Forms](changes.md#Windows-forms)
 - [WorkFlow](changes.md#workflow)

@@ -1,4 +1,4 @@
-# .NET Framework Build 3694 Release Notes
+# .NET Framework Build 3707 Release Notes
 Following changes are included in .NET Framework 4.8 build 3707. You can view the full list of [.NET Framework 4.8 Changes](/release-notes/NET48/dotnet-48-changes.md).
 
 .NET Framework release notes describe product improvements grouped by product area. Each change includes a Microsoft-internal VSTS bug ID, the primary binary that was updated and whether the change was a bug or a feature.
