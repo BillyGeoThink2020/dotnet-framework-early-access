@@ -17,9 +17,9 @@ The installer will look similar to the following:
 
 You can validate the build was correctly installed on your system, given your Windows version:
 
-* **Windows 10 April 2018 Update, Windows 10 Creators Update, Windows 10 Anniversary Update, Windows Server 2016, Windows 10 Insider Preview Build (RS5)** -- you can find this as 
+* **Windows 10 version 1809, Windows 10 version 1803, Windows 10 version 1709, Windows 10 version 1703, Windows 10 version 1607, Windows 8.1, Windows 7 SP1, Windows Server 2019, Windows Server version 1803, Windows Server version 1709, Windows Server 2016, Windows Server 2012, Windows Server 2012 R2, Windows Server 2008 R2 SP1** -- you can find this as 
 'Update for Microsoft Windows (KB4087461)' or 'Update for Microsoft Windows (KB4087485)' under Installed Updates in Control Panel depending on the Windows 10 version.
 
 ## Uninstallation
 
-* **Windows 10 April 2018 Update, Windows 10 Creators Update, Windows 10 Anniversary Update, Windows Server 2016, Windows 10 Insider Preview Build (RS5)** -- Go to Installed Updates in Control Panel. Select 'Update for Microsoft Windows (KB4087461)' or 'Update for Microsoft Windows (KB4087485)' depending on the OS platform. Click uninstall and follow steps
+* **Windows 10 version 1809, Windows 10 version 1803, Windows 10 version 1709, Windows 10 version 1703, Windows 10 version 1607, Windows 8.1, Windows 7 SP1, Windows Server 2019, Windows Server version 1803, Windows Server version 1709, Windows Server 2016, Windows Server 2012, Windows Server 2012 R2, Windows Server 2008 R2 SP1** -- Go to Installed Updates in Control Panel. Select 'Update for Microsoft Windows (KB4087461)' or 'Update for Microsoft Windows (KB4087485)' depending on the OS platform. Click uninstall and follow steps.

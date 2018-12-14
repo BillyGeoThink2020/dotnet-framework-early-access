@@ -23,16 +23,18 @@ The .NET Framework Build 3707 can be installed on the following Windows versions
 
 **Client**
 
-* Latest Windows 10 Insider Preview Build (RS5)
-* Windows 10 April 2018 Update
-* Windows 10 Fall Creators Update
-* Windows 10 Creators Update
-* Windows 10 Anniversary Update
+* Windows 10, version 1809
+* Windows 10, version 1803
+* Windows 10, version 1709
+* Windows 10, version 1703 
+* Windows 10, version 1607 
 * Windows 8.1
 * Windows 7 SP1
 
 **Server**
 
+* Windows Server 2019
+* Windows Server, version 1803
 * Windows Server, version 1709
 * Windows Server 2016
 * Windows Server 2012

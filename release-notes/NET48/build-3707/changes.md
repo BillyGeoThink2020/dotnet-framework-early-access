@@ -3,6 +3,10 @@ Following changes are included in .NET Framework 4.8 build 3707. You can view th
 
 .NET Framework release notes describe product improvements grouped by product area. Each change includes a Microsoft-internal VSTS bug ID, the primary binary that was updated and whether the change was a bug or a feature.
 
+## BCL
+* Fixed an IndexOutOfRangeException thrown when asynchronously reading a process output with less than a character's worth of bytes is read at the beginning of a line. [724219, System.dll, Bug, Build:3707]
+* Mitigate compatibility breaks seen in some System.Data.SqlClient usage scenarios. [727701, System.Configuration.dll, Bug, Build:3707]
+
 ## CLR
 * Fixed ability to handle process corrupted state exceptions stemming from Marshal.PtrToStructure on x86. [381677, clr.dll, Bug, Build:3707]
 * Fixed intermittent access violation errors when Server GC interacts with type-forwarded value types implemented in mscorlib or other domain-neutral assemblies during garbage collection. [425626, clr.dll, Bug, Build:3707]

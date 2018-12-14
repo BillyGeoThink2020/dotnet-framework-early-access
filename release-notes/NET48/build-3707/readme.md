@@ -8,6 +8,7 @@ Learn more about the changes made in this .NET Framework build:
 
 ## Release Notes by Product Area
 
+- [BCL](changes.md#bcl)
 - [CLR](changes.md#clr)
 - [WCF](changes.md#WCF)
 - [Windows Forms](changes.md#Windows-forms)
