@@ -272,7 +272,6 @@ App.config file content example with enabled keyboard tooltips for apps targetin
   </configuration>
 * Added per monitor DPI awareness support to the PropertyGrid. [719232, System.Windows.Forms.dll, Bug, Build:3707]
 
-
 ## WPF
 
 * Fixed a memory leak arising when removing data items from their parent collections, when UIAutomation is present. [172291, PresentationFramework.dll, Bug, Build:3621]
